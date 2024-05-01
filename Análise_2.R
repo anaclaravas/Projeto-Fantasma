@@ -1,6 +1,5 @@
 #Projeto Fantasma
 #Análise 2
-#Objetivo:Variação da nota IMDB por temporada dos episódios
  
 install.packages("readr")
 library(readr)
@@ -26,6 +25,7 @@ df <- as.data.frame(banco_final$imdb)
 df <- df%>%
   dplyr::mutate(banco_final$season)
 
+
 #Data frame com as variações das notas dos episódios divididas em temporadas
 
 media <- df%>%
@@ -43,13 +43,18 @@ variações <- filter(df2, df2$`banco_final$season`!="Special")
 barchart<-ggplot()
 barchart<-barchart + geom_col(data=variações, 
                               aes(x=`banco_final$season`, 
-                                  y=`variação`), 
+                                  y=`variação`, fill=`banco_final$season`), 
+                              show.legend=FALSE, 
                               position = "dodge")
 barchart<-barchart + labs(title=
-                            "Variação da nota IMDB por temporada dos episódios",
-                          x="Temporada", y="Variação da nota IMDb", 
-                          caption="Dados fornecidos pela Warner Bros Entertainment")
+                    "Variação da nota IMDB por temporada dos episódios",
+                    x="Temporada", y="Variação da nota IMDb", 
+                    caption="Dados fornecidos pela Warner Bros Entertainment")
 barchart
+
+
+
+
 
 
 
