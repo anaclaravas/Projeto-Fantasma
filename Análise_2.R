@@ -14,6 +14,22 @@ library(dplyr)
 install.packages("ggplot2")
 library(ggplot2)
 
+#Padronização 
+
+cores_estat <- c("#A11D21", "#003366", "#CC9900", "#663333", "#FF6600",
+                 "#CC9966", "#999966", "#006606", "#008091", "#041835",
+                 "#666666")
+
+
+
+theme_estat <- function(...){theme <- ggplot2::theme_bw() 
+                             + ggplot2::theme(axis.title.y = ggplot2::element_text(colour="black",
+                               size = 12), axis.title.x = ggplot2::element_text(colour="black", size = 12),
+                               axis.text = ggplot2::element_text(colour="black", size=9.5), 
+                               panel.border = ggplot2::element_blank(),
+                               axis.line = ggplot2::element_line(colour="black"), legend.position = "top",...)
+return(list(theme, scale_fill_manual(values=cores_estat), 
+            scale_colour_manual(values=cores_estat)))}
 
 #Análise 2 ----
 
@@ -25,31 +41,31 @@ df <- as.data.frame(banco_final$imdb)
 df <- df%>%
   dplyr::mutate(banco_final$season)
 
-
 #Data frame com as variações das notas dos episódios divididas em temporadas
 
 media <- df%>%
   group_by(banco_final$season) %>%
-  summarise(variação = var(`banco_final$imdb`)) %>%
+  summarise(variação = amp(`banco_final$imdb`)) %>%
   arrange(`banco_final$season`, .locale = "en")
 
 df1 <- filter(media, media$`banco_final$season`!="Crossover") 
 df2 <- filter(df1, df1$`banco_final$season`!="Movie") 
-variações <- filter(df2, df2$`banco_final$season`!="Special") 
+amplitude <- filter(df2, df2$`banco_final$season`!="Special") 
 
 
 #Gráfico----
 
 barchart<-ggplot()
+
 barchart<-barchart + geom_col(data=variações, 
                               aes(x=`banco_final$season`, 
-                                  y=`variação`, fill=`banco_final$season`), 
+                                  y=`variação`, fill=FALSE), 
                               show.legend=FALSE, 
                               position = "dodge")
-barchart<-barchart + labs(title=
-                    "Variação da nota IMDB por temporada dos episódios",
-                    x="Temporada", y="Variação da nota IMDb", 
-                    caption="Dados fornecidos pela Warner Bros Entertainment")
+
+barchart<-barchart + labs(x="Temporada", y="Variação da nota IMDb", 
+  caption="Dados fornecidos pela Warner Bros Entertainment") + theme_estat()
+
 barchart
 
 
