@@ -1,7 +1,10 @@
-#Projeto Fantasma: Análise 1
+#Projeto Fantasma
+
 #Ana Clara Leal
 
-# Objetivo - Número de lançamentos a cada década por formato de lançamento ----
+#Análise 1 ----
+
+# Objetivo - Número de lançamentos a cada década por formato de lançamento 
 
 #Pacotes
 install.packages("readr")
@@ -17,6 +20,21 @@ library(dplyr)
 install.packages("ggplot2")
 library(ggplot2)
 
+#Padronização
+
+cores_estat <- c("#A11D21", "#003366", "#CC9900", "#663333", "#FF6600",
+                 "#CC9966", "#999966", "#006606", "#008091", "#041835",
+                 "#666666")
+
+theme_estat <- function(...){theme <- ggplot2::theme_bw() + ggplot2::theme(axis.title.y = ggplot2::element_text(colour="black",
+size = 12), axis.title.x = ggplot2::element_text(colour="black", size = 12),
+axis.text = ggplot2::element_text(colour="black", size=9.5), 
+panel.border = ggplot2::element_blank(),
+axis.line = ggplot2::element_line(colour="black"), legend.position = "top",...)
+return(list(theme, scale_fill_manual(values=cores_estat), 
+            scale_colour_manual(values=cores_estat)))}
+
+ggplot(data) + ... + theme_estat()
 
 #Transformando o formato das variáveis
 
@@ -41,23 +59,18 @@ df.summary <- df%>%
 
 #Resultado ----
 
-
 tabela <- table(df.summary)
 tabela_geral <- as.data.frame(tabela)
 
-
-
 #Gráfico ----
 
-barchart<-ggplot()
-barchart<-barchart + geom_col(data=tabela_geral, 
-                              aes(x=tabela_geral$Décadas, 
-                                  y=tabela_geral$Frequência, 
-                                  fill=tabela_geral$Formato), 
-                              position = "dodge")
-barchart<-barchart + labs(title=
-                 "Número de lançamentos a cada década por formato de lançamento",
-                 x="Décadas", y="Número de lançamentos", 
-                 fill="Formato de Lançamento", 
-                 caption="Dados fornecidos pela Warner Bros Entertainment")
-barchart
+ggplot(tabela_geral) +
+  aes(x=Decades, y=Freq, group=Formato , colour=Formato ) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_colour_manual(name = "Formato", labels = c("Serie", "Movie", "Crossover")) +
+  labs(x = "Década", y = "Número de lançamentos") +
+  theme_estat()
+ggsave("serie_grupo.pdf", width = 158, height = 93, units = "mm")
+
+colnames(tabela_geral)[2]<-"Formato"
