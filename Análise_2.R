@@ -1,6 +1,8 @@
 #Projeto Fantasma
 #Análise 2
- 
+
+#Pacotes
+
 install.packages("readr")
 library(readr)
 install.packages("tidyr")
@@ -22,12 +24,11 @@ cores_estat <- c("#A11D21", "#003366", "#CC9900", "#663333", "#FF6600",
 
 
 
-theme_estat <- function(...){theme <- ggplot2::theme_bw() 
-                             + ggplot2::theme(axis.title.y = ggplot2::element_text(colour="black",
-                               size = 12), axis.title.x = ggplot2::element_text(colour="black", size = 12),
-                               axis.text = ggplot2::element_text(colour="black", size=9.5), 
-                               panel.border = ggplot2::element_blank(),
-                               axis.line = ggplot2::element_line(colour="black"), legend.position = "top",...)
+theme_estat <- function(...){theme <- ggplot2::theme_bw() + ggplot2::theme(axis.title.y = ggplot2::element_text(colour="black",
+                                                                                                                size = 12), axis.title.x = ggplot2::element_text(colour="black", size = 12),
+                                                                           axis.text = ggplot2::element_text(colour="black", size=9.5), 
+                                                                           panel.border = ggplot2::element_blank(),
+                                                                           axis.line = ggplot2::element_line(colour="black"), legend.position = "top",...)
 return(list(theme, scale_fill_manual(values=cores_estat), 
             scale_colour_manual(values=cores_estat)))}
 
@@ -55,20 +56,21 @@ amplitude <- filter(df2, df2$`banco_final$season`!="Special")
 
 #Gráfico----
 
+colnames(variações)[1]<-"temporada"
+
 barchart<-ggplot()
 
 barchart<-barchart + geom_col(data=variações, 
-                              aes(x=`banco_final$season`, 
+                              aes(x=`temporada`, 
                                   y=`variação`, fill=FALSE), 
                               show.legend=FALSE, 
                               position = "dodge")
 
-barchart<-barchart + labs(x="Temporada", y="Variação da nota IMDb", 
-  caption="Dados fornecidos pela Warner Bros Entertainment") + theme_estat()
+barchart<-barchart + labs(x="Temporada", y="Variação da nota IMDb") + theme_estat()
+
+ggsave("colunas -uni -freq.pdf", width = 158, height = 93, units = "mm")
 
 barchart
-
-
 
 
 
