@@ -1,8 +1,6 @@
 #Projeto Fantasma
 #Análise 2
-
-#Pacotes
-
+ 
 install.packages("readr")
 library(readr)
 install.packages("tidyr")
@@ -56,22 +54,20 @@ amplitude <- filter(df2, df2$`banco_final$season`!="Special")
 
 #Gráfico----
 
-colnames(variações)[1]<-"temporada"
+colnames(variações)[1]<-"Temporada"
+colnames(variações)[2]<-"Variação da nota IMDb"
 
-barchart<-ggplot()
 
-barchart<-barchart + geom_col(data=variações, 
-                              aes(x=`temporada`, 
-                                  y=`variação`, fill=FALSE), 
-                              show.legend=FALSE, 
-                              position = "dodge")
-
-barchart<-barchart + labs(x="Temporada", y="Variação da nota IMDb") + theme_estat()
-
+barchart<-ggplot(data=variações) + geom_col(data=variações, 
+                                            aes(x=`Temporada`, 
+                                                y=`Variação da nota IMDb`, 
+                                                fill=FALSE), 
+                                            show.legend=FALSE, 
+                                            position = "dodge") + theme_estat()
+  
 ggsave("colunas -uni -freq.pdf", width = 158, height = 93, units = "mm")
 
 barchart
-
 
 
 
