@@ -7,16 +7,9 @@
 
 
 #Pacotes
-install.packages("readr")
-library(readr)
-install.packages("tidyr")
-library(tidyr)
 install.packages("tidyverse")
 library(tidyverse)
-install.packages("dplyr")
-library(dplyr)
-install.packages("ggplot2")
-library(ggplot2)
+
 
 #Padronização
 
@@ -54,30 +47,38 @@ df<-df%>%
 colnames(df)[1]<-"terreno"
 colnames(df)[2]<-"armadilha"
 
-urban<-subset(df, terreno=="Urban")
-rural<-subset(df, terreno=="Rural")
-forest<-subset(df, terreno=="Forest")
+final<-df%>%
+  filter(df$terreno=="Urban")
 
-urban<-as.data.frame(table(urban))
-rural<-as.data.frame(table(rural))
-forest<-as.data.frame(table(forest))
+df2<-df%>%
+  filter(df$terreno=="Rural")
 
-#Construção dos gráficos
+df3<-df%>%
+  filter(df$terreno=="Forest")
 
-trans_drv <- mpg %>%
-  mutate(trans = case_when(trans %>% str_detect("auto") ~ "auto",
-    trans %>% str_detect("manual") ~ "manual")) %>%
-  group_by(trans, drv) %>%
+final<-rbind(final, df2, df3)
+
+tabela<-table(final)
+
+analise3<-as.data.frame(tabela)
+
+#Construção do gráfico
+
+grafico<-analise3%>%
+  mutate(terreno = case_when(terreno %>% str_detect("Forest") ~ "Forest",
+    terreno %>% str_detect("Rural") ~ "Rural",
+    terreno %>% str_detect("Urban") ~ "Urban")) %>%
+  group_by(terreno, armadilha) %>%
   summarise(freq = n()) %>%
-  mutate(freq_relativa = round(freq/sum(freq) * 100,1))
-porcentagens<-str_c(trans_drv$freq_relativa, "%") %>% str_replace("
+  mutate(freq_relativa = round(freq/sum(freq) * 100,1)) 
+porcentagens<-str_c(analise3$freq_relativa, "%") %>% str_replace("
 \\.", ",")
-legendas <- str_squish(str_c(trans_drv$freq, "(", porcentagens, ")"))
-ggplot(trans_drv) +
-  aes(x = fct_reorder(trans, freq, .desc = T), y = freq,
-    fill = drv, label = legendas) +
+  legendas<-str_squish(str_c(analise3$Freq, "(", porcentagens,")"))
+  
+grafico<-ggplot(grafico) +
+  aes(x = fct_reorder(terreno, freq, .desc = T), y = freq,
+    fill = armadilha, label = legendas) +
   geom_col(position = position_dodge2(preserve = "single", padding = 0)) +
-  geom_text(position = position_dodge(width = .9),
-    vjust = -0.5, hjust = 0.5,
-    size = 3) + labs(x = "Transmissão", y = "Frequência") + theme_estat()
+  geom_text(position = position_dodge(width = .9), vjust = -0.5, hjust = 0.5, size = 3) + labs(x = "Terreno", y = "Frequência") + theme_estat()
 ggsave("colunas-bi-freq.pdf", width = 158, height = 93, units = "mm")
+
