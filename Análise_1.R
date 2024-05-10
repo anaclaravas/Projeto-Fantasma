@@ -7,18 +7,10 @@
 # Objetivo - Número de lançamentos a cada década por formato de lançamento 
 
 #Pacotes
-install.packages("readr")
-library(readr)
-install.packages("tidyr")
-library(tidyr)
 install.packages("lubridate")
 library(lubridate)
 install.packages("tidyverse")
 library(tidyverse)
-install.packages("dplyr")
-library(dplyr)
-install.packages("ggplot2")
-library(ggplot2)
 
 #Padronização
 
