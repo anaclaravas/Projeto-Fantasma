@@ -66,19 +66,20 @@ analise3<-as.data.frame(tabela)
 
 grafico<-analise3%>%
   mutate(terreno = case_when(terreno %>% str_detect("Forest") ~ "Forest",
-    terreno %>% str_detect("Rural") ~ "Rural",
-    terreno %>% str_detect("Urban") ~ "Urban")) %>%
+                             terreno %>% str_detect("Rural") ~ "Rural",
+                             terreno %>% str_detect("Urban") ~ "Urban")) %>%
   group_by(terreno, armadilha) %>%
-  summarise(freq = n()) %>%
-  mutate(freq_relativa = round(freq/sum(freq) * 100,1)) 
+  summarise(Freq = n()) %>%
+  mutate(freq_relativa = round(Freq/sum(Freq) * 100,1)) 
 porcentagens<-str_c(analise3$freq_relativa, "%") %>% str_replace("
 \\.", ",")
-  legendas<-str_squish(str_c(analise3$Freq, "(", porcentagens,")"))
-  
+legendas<-str_squish(str_c(analise3$Freq, "(", porcentagens,")"))
+
 grafico<-ggplot(grafico) +
-  aes(x = fct_reorder(terreno, freq, .desc = T), y = freq,
-    fill = armadilha, label = legendas) +
+  aes(x = fct_reorder(terreno, Freq, .desc = T), y = Freq,
+      fill = armadilha, label = legendas) +
   geom_col(position = position_dodge2(preserve = "single", padding = 0)) +
   geom_text(position = position_dodge(width = .9), vjust = -0.5, hjust = 0.5, size = 3) + labs(x = "Terreno", y = "Frequência") + theme_estat()
 ggsave("colunas-bi-freq.pdf", width = 158, height = 93, units = "mm")
 
+grafico
