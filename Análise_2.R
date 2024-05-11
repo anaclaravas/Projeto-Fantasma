@@ -26,38 +26,29 @@ return(list(theme, scale_fill_manual(values=cores_estat),
 
 #Separando as notas no IMDb e as temporadas em um data frame
 
-df <- as.data.frame(banco_final$imdb)
-df <- df%>%
+df<-as.data.frame(banco_final$imdb)
+df<-df%>%
   dplyr::mutate(banco_final$season)
 
 #Data frame com as variações das notas dos episódios divididas em temporadas
 
-media <- df%>%
-  group_by(banco_final$season) %>%
-  summarise(variação = amp(`banco_final$imdb`)) %>%
-  arrange(`banco_final$season`, .locale = "en")
+colnames(df)[2]<-"temp"
+  
+data<-df[!(df$temp %in% c("Crossover", "Movie", "Special")),]
 
-df1 <- filter(media, media$`banco_final$season`!="Crossover") 
-df2 <- filter(df1, df1$`banco_final$season`!="Movie") 
-amplitude <- filter(df2, df2$`banco_final$season`!="Special") 
-
+colnames(data)[1]<-"nota"
 
 #Gráfico----
 
-colnames(variações)[1]<-"Temporada"
-colnames(variações)[2]<-"Variação da nota IMDb"
+boxplot<-ggplot(data) +
+  aes(x = reorder(temp, nota, FUN = median), y = nota) +
+  geom_boxplot(fill = c("#A11D21"), width = 0.5) +
+  stat_summary(fun = "mean", geom = "point", shape = 23, size = 3, fill = "white") +
+  labs(x = "Temporada", y = "Variação da nota IMDb") + theme_estat()
+ggsave("plot_analise2.pdf", width = 158, height = 93, units = "mm")
 
 
-barchart<-ggplot(data=variações) + geom_col(data=variações, 
-                                            aes(x=`Temporada`, 
-                                                y=`Variação da nota IMDb`, 
-                                                fill=FALSE), 
-                                            show.legend=FALSE, 
-                                            position = "dodge") + theme_estat()
-  
-ggsave("colunas -uni -freq.pdf", width = 158, height = 93, units = "mm")
 
-barchart
 
 
 
