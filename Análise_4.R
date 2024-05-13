@@ -48,7 +48,7 @@ resumo_imdb<-df%>%
               `1º Quartil` = round(quantile(imdb, probs = .25),2),
               Mediana = round(quantile(imdb, probs = .5),2),
               `3º Quartil` = round(quantile(imdb, probs = .75),2),
-              `Máximo ` = round(max(imdb),2)) %>% t() %>%as.data.frame()
+              `Máximo` = round(max(imdb),2)) %>% t() %>%as.data.frame()
 resumo_eng<-df%>%
   summarize(Média = round(mean(eng), 2),
             `Desvio Padrão` = round(sd(eng),2),
@@ -57,8 +57,21 @@ resumo_eng<-df%>%
             `1º Quartil` = round(quantile(eng, probs = .25),2),
             Mediana = round(quantile(eng, probs = .5),2),
             `3º Quartil` = round(quantile(eng, probs = .75),2),
-            `Máximo ` = round(max(eng),2)) %>% t() %>%as.data.frame()
+            `Máximo` = round(max(eng),2)) %>% t() %>%as.data.frame()
 
+#Boxplot das variáveis
+
+boxplot_imdb<-ggplot(df) +
+  aes(x= factor(""), y=imdb) + geom_boxplot(fill=c("#A11D21"), width=0.5) +
+  guides(fill= FALSE) +
+  stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white") +
+  labs(x="", y="Nota IMDb") + theme_estat()
+
+boxplot_eng<-ggplot(df) +
+  aes(x=factor(""), y=eng) + geom_boxplot(fill=c("#A11D21"), width=0.5) +
+  guides(fill= FALSE) +
+  stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white") +
+  labs(x="", y="Engajamento") + theme_estat()
 
 
 
