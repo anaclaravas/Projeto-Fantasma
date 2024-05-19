@@ -59,19 +59,9 @@ resumo_eng<-df%>%
             `3º Quartil` = round(quantile(eng, probs = .75),2),
             `Máximo` = round(max(eng),2)) %>% t() %>%as.data.frame()
 
-#Boxplot das variáveis
+#Correlação Linear
 
-boxplot_imdb<-ggplot(df) +
-  aes(x= factor(""), y=imdb) + geom_boxplot(fill=c("#A11D21"), width=0.5) +
-  guides(fill= FALSE) +
-  stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white") +
-  labs(x="", y="Nota IMDb") + theme_estat()
-
-boxplot_eng<-ggplot(df) +
-  aes(x=factor(""), y=eng) + geom_boxplot(fill=c("#A11D21"), width=0.5) +
-  guides(fill= FALSE) +
-  stat_summary(fun="mean", geom="point", shape=23, size=3, fill="white") +
-  labs(x="", y="Engajamento") + theme_estat()
+correlação<-cor(df$imdb, df$eng)
 
 
 
