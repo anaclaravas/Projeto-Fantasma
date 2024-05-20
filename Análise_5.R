@@ -4,6 +4,9 @@
 #Pacotes
 install.packages("tidyverse")
 library(tidyverse)
+install.packages("tibble")
+library(tibble)
+
 
 #Padronização ESTAT
 
@@ -33,6 +36,9 @@ df_fred<-df_fred[df_fred$fred == "TRUE",]
 
 df_fred<-na.omit(df_fred)
 
+df_fred$fred<-NULL
+
+
 #Daphne
 
 df_daphne<-as.data.frame(banco_final$caught_daphnie)
@@ -47,6 +53,8 @@ df_daphne<-df_daphne[df_daphne$daphne == "TRUE",]
 
 df_daphne<-na.omit(df_daphne)
 
+df_daphne$daphne<-NULL
+
 #Velma
 
 df_velma<-as.data.frame(banco_final$caught_velma)
@@ -60,6 +68,9 @@ colnames(df_velma)[2]<-"eng"
 df_velma<-df_velma[df_velma$velma == "TRUE",]
 
 df_velma<-na.omit(df_velma)
+
+df_velma$velma<-NULL
+
 
 
 #Shaggy
@@ -77,6 +88,7 @@ df_shaggy<-df_shaggy[df_shaggy$shaggy == "TRUE",]
 
 df_shaggy<-na.omit(df_shaggy)
 
+df_shaggy$shaggy<-NULL
 
 
 #Scooby
@@ -93,6 +105,8 @@ df_scooby<-df_scooby[df_scooby$scooby == "TRUE",]
 
 df_scooby<-na.omit(df_scooby)
 
+df_scooby$scooby<-NULL
+
 
 #Não foi pego
 
@@ -108,6 +122,8 @@ df_not<-df_not[df_not$not == "TRUE",]
 
 df_not<-na.omit(df_not)
 
+df_not$not<-NULL
+
 #Pego por outro personagem
 
 df_other<-as.data.frame(banco_final$caught_other)
@@ -122,4 +138,6 @@ df_other<-df_other[df_other$other == "TRUE",]
 
 df_other<-na.omit(df_other)
 
-#Gráfico
+df_other$other<-NULL
+
+#Juntando os dados
