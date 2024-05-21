@@ -33,17 +33,18 @@ banco_final$Formato<-as.factor(banco_final$format)
 
 #Criando um data frame com as variáveis de interesse seperando-as em décadas
 
-df<-as.data.frame(banco_final$Datas)
+df<-as.data.frame(banco_final$Formato)
+df<-str_replace(df$`banco_final$Formato`,"Movie", "Filme")
+df<-as.data.frame(df)
+
 df<-df%>%
-  dplyr::mutate(banco_final$Formato)
-
-
+  dplyr::mutate(banco_final$Datas)
 df<-df%>%
   dplyr::mutate(Decades = cut.Date(`banco_final$Datas`
                                    , breaks = "10 years"
                                    ,labels = FALSE))
 
-colnames(df)[2]<-"Formato"
+colnames(df)[1]<-"Formato"
 
 df$`banco_final$Datas`<-NULL
 
@@ -60,7 +61,7 @@ ggplot(data) +
   aes(x=Decades, y=Freq, group=Formato, colour=Formato) +
   geom_line(size = 1) +
   geom_point(size = 2) +
-  scale_colour_manual(name = "Formato", labels = c("Movie", "Serie", "Crossover")) +
+  scale_colour_manual(name = "Formato", labels = c("Filme", "Serie", "Crossover")) +
   labs(x = "Década", y = "Número de lançamentos") +
   theme_estat()
-ggsave("lineplot_1.pdf", width = 158, height = 93, units = "mm")
+ggsave("plot_analise1.pdf", width = 158, height = 93, units = "mm")
