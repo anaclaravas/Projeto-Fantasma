@@ -87,9 +87,5 @@ grafico<-ggplot(grafico) +
   geom_text(position = position_dodge(width = .9), vjust = -0.5, 
             hjust = 0.5, size = 3) + labs(x = "Terreno", y = "Frequência", 
                                           fill = "Armadilha funcionou de primeira") + theme_estat()
+
 ggsave("plot_analise3.pdf", width = 158, height = 93, units = "mm")
-grafico
-
-
-
-
