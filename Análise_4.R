@@ -31,11 +31,11 @@ colnames(df)[1]<-"imdb"
 colnames(df)[2]<-"eng"
 
 #Gráfico
-
 ggplot(df) + aes(x = imdb, y = eng) +
   geom_point(colour = "#A11D21", size = 3) +
   labs(x = "Nota IMDb",
     y = "Engajamento") + theme_estat()
+
 ggsave("plot_analise4.pdf", width = 158, height = 93, units = "mm")
 
 #Medidas resumo das variáveis
@@ -62,7 +62,3 @@ resumo_eng<-df%>%
 #Correlação Linear
 
 correlação<-cor(df$imdb, df$eng)
-
-
-
-
