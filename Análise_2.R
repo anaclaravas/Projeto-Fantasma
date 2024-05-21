@@ -47,10 +47,16 @@ boxplot<-ggplot(data) +
   labs(x = "Temporada", y = "Variação da nota IMDb") + theme_estat()
 ggsave("plot_analise2.pdf", width = 158, height = 93, units = "mm")
 
+#Quadro de medidas resumo----
 
-
-
-
-
-
-
+quadro_resumo<-data %>%
+  group_by(temp) %>% 
+  summarize (Média = round(mean(nota),2),
+              `Desvio Padrão` = round(sd(nota),2),
+              `Variância` = round(var(nota),2),
+              `Mínimo` = round(min(nota),2),
+              `1º Quartil` = round(quantile(nota, probs = .25), 2),
+              Mediana = round(quantile(nota, probs = .5), 2),
+              `3º Quartil` = round(quantile(nota, probs = .75),2),
+              `Máximo` = round(max(nota),2)) %>% t() %>% as.data.frame()%>%
+  mutate(V1 = str_replace(V1,"\\.",","))
