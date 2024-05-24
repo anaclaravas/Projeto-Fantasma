@@ -151,3 +151,17 @@ ggplot(data) +
   labs(x = "Personagem que capturou o monstro", y = "Engajamento") +
   theme_estat()
 ggsave("plot_analise5.pdf", width = 158, height = 93, units = "mm")
+
+
+#Quadro de Medidas Resumo
+
+quadro_resumo<-data%>%
+  group_by(cap)%>% # caso mais de uma categoria
+  summarize(Média = round(mean(eng),2),
+              `Desvio Padrão` = round(sd(eng),2),
+              `Variância` = round(var(eng),2),
+              `Mínimo` = round(min(eng),2),
+              `1º Quartil` = round(quantile(eng, probs = .25),2),
+              `Mediana` = round(quantile(eng, probs = .5),2),
+              `3º Quartil` = round(quantile(eng, probs = .75),2),
+              `Máximo` = round(max(eng),2)) %>% t() %>% as.data.frame()
