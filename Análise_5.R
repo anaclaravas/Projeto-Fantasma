@@ -164,9 +164,3 @@ resumo<-data%>%
             `Mediana` = round(quantile(eng, probs = .5),2),
             `3º Quartil` = round(quantile(eng, probs = .75),2),
             `Máximo` = round(max(eng),2)) %>% t() %>% as.data.frame()
-
-#Assimetria
-
-a<-3*(179.4 - 184.02)/26.52
-
-b<-3*(178.44 - 184.77)/29.65
